@@ -1,0 +1,15 @@
+brothers_karamazov.txt
+Token count before cleaning: 360457
+Token count after cleaning: 158346
+dantes_inferno.txt
+Token count before cleaning: 118338
+Token count after cleaning: 60876
+The_Leviathan.txt
+Token count before cleaning: 214656
+Token count after cleaning: 97091
+the_odyssey.txt
+Token count before cleaning: 130606
+Token count after cleaning: 58438
+alltext.csv
+Token count before cleaning: 824057
+Token count after cleaning: 374751
