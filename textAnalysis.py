@@ -6,7 +6,9 @@ import numpy
 import nltk
 import nltk.corpus
 import csv
+from pattern.text.en import singularize
 from nltk.corpus import stopwords
+from nltk.corpus import wordnet
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 
@@ -41,12 +43,17 @@ for file in loc: # loop through all files in the directory
     # and, the, or, etc do not provide anything to us
     stop_words = set(stopwords.words('english'))
     cleantokens = [words for words in tokens if not words in stop_words]
-    stats.write("Token count before cleaning: {0}\nToken count after cleaning: {1}\n".format(len(tokens),len(cleantokens)))
+    #Convert plurals to singles
+    singletokens = [singularize(token) for token in cleantokens]
+    #Lemmatize the tokens to have just the stems
+    lemtokens = [nltk.WordNetLemmatizer().lemmatize(token) for token in singletokens]
+    
+    stats.write("Token count before cleaning: {0}\nToken count after cleaning: {1}\n".format(len(tokens),len(lemtokens)))
 
     # we can tag the words left then
     # tokens_tagged = nltk.pos_tag(cleantokens)
 
-    fdist = FreqDist(cleantokens)
+    fdist = FreqDist(lemtokens)
 
     # get top 1000 most common words 
     topOnes = fdist.most_common(1000)
@@ -70,8 +77,12 @@ nopunc = re.sub("[^a-zA-Z0-9\s]+", " ",alltext)
 tokens = word_tokenize(nopunc)
 stop_words = set(stopwords.words('english'))
 cleantokens = [words for words in tokens if not words in stop_words]
-stats.write("Token count before cleaning: {0}\nToken count after cleaning: {1}\n".format(len(tokens),len(cleantokens)))
-fdist = FreqDist(cleantokens)
+#Lemmatize the words
+singletokens = [singularize(token) for token in cleantokens]
+#Lemmatize the tokens to have just the stems
+lemtokens = [nltk.WordNetLemmatizer().lemmatize(token) for token in singletokens]
+stats.write("Token count before cleaning: {0}\nToken count after cleaning: {1}\n".format(len(tokens),len(lemtokens)))
+fdist = FreqDist(lemtokens)
 topOnes = fdist.most_common(1000)
     
 for key, count in topOnes:
